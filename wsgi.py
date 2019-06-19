@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, abort
 app = Flask(__name__)
 
 PRODUCTS = [
@@ -16,3 +16,9 @@ def hello():
 @app.route('/api/v1/products')
 def list_products():
     return jsonify(list(products_dict.values()))
+
+@app.route('/api/v1/products/<int:product_id>')
+def get_product(product_id):
+    if product_id in products_dict:
+        return jsonify(products_dict[product_id])
+    abort(404)
