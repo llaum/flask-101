@@ -29,3 +29,10 @@ def delete_product(product_id):
         del products_dict[product_id]
         return "", 204
     abort(404)
+
+@app.route('/api/v1/products', methods=['POST'])
+def post_products():
+    product_name = request.get_json()["name"]
+    next_id = max(list(products_dict.keys())) + 1
+    products_dict[next_id] = dict(id=next_id, name=product_name)
+    return jsonify(products_dict[next_id]), 201

@@ -30,3 +30,11 @@ class TestViews(TestCase):
     def test_delete_product_id_not_found(self):
         response = self.client.delete("/api/v1/products/1000000")
         self.assertTrue(response.status_code == 404)
+
+    def test_create_product_id(self):
+        response = self.client.post("/api/v1/products", json={"name": "Workelo"})
+        self.assertTrue(response.status_code == 201)
+        product_id = response.get_json()["id"]
+        response = self.client.get(f"/api/v1/products/{product_id}")
+        self.assertTrue(response.status_code == 200)
+        self.assertEqual(response.get_json()["name"], "Workelo")
