@@ -21,3 +21,12 @@ class TestViews(TestCase):
         response = self.client.get("/api/v1/products/1000000")
         self.assertTrue(response.status_code == 404)
 
+    def test_delete_product_id(self):
+        response = self.client.delete("/api/v1/products/3")
+        self.assertTrue(response.status_code == 204)
+        response = self.client.get("/api/v1/products/3")
+        self.assertTrue(response.status_code == 404)
+
+    def test_delete_product_id_not_found(self):
+        response = self.client.delete("/api/v1/products/1000000")
+        self.assertTrue(response.status_code == 404)
