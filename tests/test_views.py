@@ -38,3 +38,13 @@ class TestViews(TestCase):
         response = self.client.get(f"/api/v1/products/{product_id}")
         self.assertTrue(response.status_code == 200)
         self.assertEqual(response.get_json()["name"], "Workelo")
+
+    def test_update_product_id(self):
+        response = self.client.patch("/api/v1/products/1", json={"name": "Skello2"})
+        self.assertTrue(response.status_code == 204)
+        response = self.client.get("/api/v1/products/1")
+        self.assertEqual(response.get_json()["name"], "Skello2")
+
+    def test_update_product_id_with_empty_name(self):
+        response = self.client.patch("/api/v1/products/1", json={"name": ""})
+        self.assertTrue(response.status_code == 422)

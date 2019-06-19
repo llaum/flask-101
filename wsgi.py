@@ -36,3 +36,13 @@ def post_products():
     next_id = max(list(products_dict.keys())) + 1
     products_dict[next_id] = dict(id=next_id, name=product_name)
     return jsonify(products_dict[next_id]), 201
+
+@app.route('/api/v1/products/<int:product_id>', methods=['PATCH'])
+def patch_product(product_id):
+    if product_id in products_dict:
+        new_product_name = request.get_json()["name"]
+        if new_product_name == "":
+            abort(422)
+        products_dict[product_id] = dict(id=product_id, name=new_product_name)
+        return "", 204
+    abort(404)
